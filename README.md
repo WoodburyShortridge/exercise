@@ -1,5 +1,33 @@
 # Axios Front End Excerise
 
+## TODO
+
+### Structure
+- [ ] Module mapper and aliases
+- [ ] Add next/react types to `_document`
+
+### API
+- [ ] Response schema validation
+- [ ] Handle missing required fields
+- [ ] Client side caching
+- [ ] End-user error handling
+
+### Components
+- [ ] Disable article link clicks on desktop when being dragged (it's fine w/ mobile touch events but not mouse)
+- [ ] Lazy load/query articles out of carousel view
+
+### Utils
+- [ ] Continue profiling performance of `useGesture` listeners and side effects and making it more performant
+
+### Tests
+- [X] Carousel snapshot
+- [X] Carousel indicator press effects
+- [ ] Carousel swipe effects
+- [X] Date format
+- [X] Is mobile hook
+- [ ] Latest articles hook
+- [ ] Element width hook
+
 Axios has a lot of award-winning journalism, and sometimes it doesn't all fit on one page, so we have to help readers easily find and read the stories they want. One of the ways we can do that is with a [Carousel](http://ui-patterns.com/patterns/Carousel), a user interface pattern that allows users to navigate between various stories while displaying a simple overview for each.
 
 Our design team has supplied the following design for a Carousel. Your task is to build it.
