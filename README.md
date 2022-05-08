@@ -1,5 +1,3 @@
-# Axios Front End Excerise
-
 ## TODO
 
 ### Structure
@@ -29,6 +27,8 @@
 - [X] Is mobile hook
 - [ ] Latest articles hook
 - [ ] Element width hook
+
+# Axios Front End Excerise
 
 Axios has a lot of award-winning journalism, and sometimes it doesn't all fit on one page, so we have to help readers easily find and read the stories they want. One of the ways we can do that is with a [Carousel](http://ui-patterns.com/patterns/Carousel), a user interface pattern that allows users to navigate between various stories while displaying a simple overview for each.
 
