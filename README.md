@@ -15,6 +15,7 @@
 ### Components
 - [ ] Disable article link clicks on desktop when being dragged (it's fine w/ mobile touch events but not mouse)
 - [ ] Lazy load/query articles out of carousel view
+- [ ] Create image src helper to choose the smallest image size from API that fits device
 
 ### Utils
 - [ ] Continue profiling performance of `useGesture` listeners and side effects and making it more performant
