@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "ext start",
+    "start": "next start",
     "lint": "next lint",
     "test": "jest"
   },
