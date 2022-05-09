@@ -7,8 +7,8 @@
  */
 import React, {useState, useEffect, RefObject} from 'react'
 
-const useElementWidth = (ref: RefObject<HTMLElement>) => {
-	const [width, setWidth] = useState(ref?.current?.offsetWidth || 0)
+const useElementWidth = (ref: RefObject<HTMLElement | null>) => {
+	const [width, setWidth] = useState((ref?.current && ref.current.offsetWidth) || 0)
 
 	useEffect(() => {
 		const getWidth = () => (ref?.current && ref.current.offsetWidth) || 0

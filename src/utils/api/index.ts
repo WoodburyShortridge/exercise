@@ -1,3 +1,5 @@
+// @todo validate the schema of response
+
 export interface Stream {
 	count: number
 	next: string | null

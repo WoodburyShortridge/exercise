@@ -41,6 +41,7 @@ const Link = styled.a<{decoration: string}>`
   font-size: 18px;
   text-align: center;
   line-height: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
