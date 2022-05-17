@@ -19,10 +19,11 @@ const useGesture = (r: RefObject<HTMLElement | null>, opts: {onSwipeRight: () =>
 		if (!r) return
 		ref.current = r.current
 		const onTouchStart = (e: TouchEvent) => {
+			e.preventDefault() // prevent horizontal page movement on mobile
 			start.current = e.touches[0].clientX
 		}
 		const onMouseStart = (e: MouseEvent) => {
-			e.preventDefault()
+			e.preventDefault() // prevent img/link drag browser behavior
 			start.current = e.x
 		}
 		const onTouchMove = (e: TouchEvent) => {
