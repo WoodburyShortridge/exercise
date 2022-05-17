@@ -4,8 +4,9 @@ import {formatDate} from '../../../utils/formatting'
 import ArrowLink from '../../atoms/buttons/arrowLink'
 import PlaceholderImage from '../../atoms/placeholderImage'
 import {Article, Body, Date, Footer, Headline, Tag, Link} from './styles'
-import IsMobile from '../../../context'
+import { IsMobile, IsDragging } from '../../../context'
 import {Article as ArticleType} from '../../../utils/api'
+import useDebounce from '../../../utils/hooks/useDebounce'
 
 interface Props {
 	article: ArticleType
@@ -23,15 +24,20 @@ const responsiveStyles = (isMobile: boolean) => ({
 
 const aspectRatio = '16x9'
 
-const ArticleCard = ({article, isDragging}: Props) => {
+const ArticleCard = ({article}: Props) => {
 	const {headline, primary_tag, primary_image, published_date, permalink} = article
 	const isMobile = useContext(IsMobile)
+	const {isDragging} = useContext(IsDragging)
+	const debouncedIsDragging = useDebounce(isDragging, 1) // small debounce so onclick event loop before isDragging reset
 	const styles = responsiveStyles(isMobile)
 	const imgSrc = primary_image ? primary_image.crops[aspectRatio].url : null
 	const date = formatDate(published_date)
 	const ariaLabel = headline
 
-	// @todo disable link clicks on desktop when being dragged (it's fine w/ mobile touch events but not mouse)
+	const disabledClickOnDrag = (e) => {
+		if (debouncedIsDragging) e.preventDefault()
+	}
+
 	return (
 		<Article>
 			<Link
@@ -39,10 +45,7 @@ const ArticleCard = ({article, isDragging}: Props) => {
 				aria-label={ariaLabel}
 				rel={'noopener noreferrer'}
 				target={'_blank'}
-				onClick={e => {
-					console.log('clicked: ', isDragging)
-					if (isDragging) e.preventDefault()
-				}}
+				onClick={disabledClickOnDrag}
 			>
 				{imgSrc ?
 					<Image
@@ -63,6 +66,7 @@ const ArticleCard = ({article, isDragging}: Props) => {
 					href={permalink}
 					rel={'noopener noreferrer'}
 					target={'_blank'}
+					onClick={disabledClickOnDrag}
 				>
 					<Headline>{headline}</Headline>
 				</Link>
@@ -77,8 +81,8 @@ const ArticleCard = ({article, isDragging}: Props) => {
 
 // parent slider re-renders frequently on drag
 // just need a simple comp here since nested article items don't change
-// const propsAreEqual = (prevArticleCard: Props, nextArticleCard: Props) => {
-// 	return !!prevArticleCard.article === !!nextArticleCard.article
-// }
+const propsAreEqual = (prevArticleCard: Props, nextArticleCard: Props) => {
+	return !!prevArticleCard.article === !!nextArticleCard.article
+}
 
-export default memo(ArticleCard)
+export default memo(ArticleCard, propsAreEqual)

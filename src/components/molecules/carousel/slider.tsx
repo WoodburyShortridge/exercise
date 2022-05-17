@@ -3,7 +3,7 @@ import {Container, Inner, Item} from './styles'
 import useElementWidth from '../../../utils/hooks/useElementWidth'
 import useGesture from '../../../utils/hooks/useGesture'
 import {COLORS} from '../../../utils/constants'
-import IsMobile from '../../../context'
+import {IsDragging, IsMobile} from '../../../context'
 
 interface Props {
 	children: JSX.Element[]
@@ -14,24 +14,19 @@ interface Props {
 
 const dragSpeed = 2
 
-const Slider = ({ children, itemsPerPage, page, changePage, isDragging, setIsDragging }: Props) => {
+const Slider = ({ children, itemsPerPage, page, changePage }: Props) => {
 	const ref = useRef<HTMLDivElement | null>(null)
 	const isMobile = useContext(IsMobile)
+	const {setIsDragging} = useContext(IsDragging)
 	const carouselWidth = useElementWidth(ref)
 	const itemWidth = carouselWidth / itemsPerPage
 
 	const delta = useGesture(ref, {
 		onSwipeLeft: () => changePage(page + 1),
 		onSwipeRight: () => changePage(page - 1),
+		onDrag: setIsDragging
 	})
 	const drag = delta * dragSpeed
-
-	useEffect(() => {
-		setTimeout(() => {
-			console.log(drag !== 0)
-			setIsDragging(drag !== 0)
-		}, 1000)
-	}, [drag !== 0])
 
 	// floor so drag/swipe snaps to the nearest item start
 	const translate = (page * (Math.floor(itemsPerPage) * itemWidth)) - drag

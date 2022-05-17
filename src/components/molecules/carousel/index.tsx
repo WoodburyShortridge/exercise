@@ -5,7 +5,7 @@ import {Footer, Header, Layout, Main, NavLeft, NavRight} from './layout'
 import ChevronButton, {Direction} from '../../atoms/buttons/chevronButton'
 import ArrowLinkButton from '../../atoms/buttons/arrowLinkButton'
 import Slider from './slider'
-import IsMobile from '../../../context'
+import { IsMobile } from '../../../context'
 
 interface Props {
 	children: JSX.Element[]
@@ -17,7 +17,7 @@ interface Props {
 	}
 }
 
-const Carousel = ({children, itemsPerPage, title, link, isDragging, setIsDragging}: Props) => {
+const Carousel = ({children, itemsPerPage, title, link}: Props) => {
 	const id = title.toLowerCase().replaceAll(' ', '-')
 	const isMobile = useContext(IsMobile)
 	const [page, setPage] = useState(0)
@@ -56,8 +56,6 @@ const Carousel = ({children, itemsPerPage, title, link, isDragging, setIsDraggin
 					itemsPerPage={itemsPerPage}
 					page={page}
 					changePage={changePage}
-					isDragging={isDragging}
-					setIsDragging={setIsDragging}
 				>
 					{children}
 				</Slider>

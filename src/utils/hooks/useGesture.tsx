@@ -10,7 +10,7 @@ import React, {RefObject, useEffect, useRef, useState} from 'react'
 
 const threshold = 50
 
-const useGesture = (r: RefObject<HTMLElement | null>, opts: {onSwipeRight: () => void, onSwipeLeft: () => void}) => {
+const useGesture = (r: RefObject<HTMLElement | null>, opts: {onSwipeRight: () => void, onSwipeLeft: () => void, onDrag: (b: boolean) => void}) => {
 	const start = useRef<number | null>(null)
 	const ref = useRef<HTMLElement | null>(null)
 	const [delta, setDelta] = useState(0)
@@ -22,8 +22,7 @@ const useGesture = (r: RefObject<HTMLElement | null>, opts: {onSwipeRight: () =>
 			start.current = e.touches[0].clientX
 		}
 		const onMouseStart = (e: MouseEvent) => {
-			if (e.target.tagName === 'IMG') console.log('YES')
-			if (e.target.tagName === 'IMG') e.preventDefault()
+			e.preventDefault()
 			start.current = e.x
 		}
 		const onTouchMove = (e: TouchEvent) => {
@@ -35,32 +34,30 @@ const useGesture = (r: RefObject<HTMLElement | null>, opts: {onSwipeRight: () =>
 			onMove(start.current, e.x)
 		}
 		const onMove = (prevPos: number, pos: number,) => {
+			if (delta === 0 && opts.onDrag) opts.onDrag(true)
 			setDelta(pos - prevPos)
 		}
 		const onTouchEnd = (e: TouchEvent) => {
 			if (!start.current) return
-			onEnd(start.current, e)
+			onEnd(start.current, e.changedTouches[0].clientX)
 		}
 		const onMouseEnd = (e: MouseEvent) => {
 			if (!start.current) return
-			e.stopImmediatePropagation()
-			e.preventDefault()
-			onEnd(start.current, e)
+			onEnd(start.current, e.x)
 		}
-		const onEnd = (prevPos: number, e: TouchEvent) => {
+		const onEnd = (prevPos: number, pos: number) => {
 			if (!start.current) return
-			const pos = e.x || e.changedTouches[0].clientX
 			const diff = pos - prevPos
+
 			if (diff > threshold) {
-				e.preventDefault()
 				if (opts.onSwipeRight) opts.onSwipeRight()
 			} else if (diff < -threshold) {
-				e.preventDefault()
 				if (opts.onSwipeLeft) opts.onSwipeLeft()
 			}
 
 			setDelta(0)
 			start.current = null
+			if (opts.onDrag) opts.onDrag(false)
 		}
 
 		if (ref.current) {

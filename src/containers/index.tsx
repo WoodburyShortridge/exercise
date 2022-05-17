@@ -1,6 +1,7 @@
+import {useState} from 'react'
 import {createGlobalStyle} from 'styled-components'
 import useIsMobile from '../utils/hooks/useIsMobile'
-import {IsMobileProvider} from '../context'
+import {IsMobileProvider, IsDraggingProvider} from '../context'
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -14,12 +15,20 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const Layout = ({children}: {children: JSX.Element}) => {
+	const [isDragging, setIsDragging] = useState(false)
 	const isMobile = useIsMobile()
 
 	return (
 		<IsMobileProvider value={isMobile}>
-			<GlobalStyle/>
-			{children}
+			<IsDraggingProvider
+				value={{
+					isDragging,
+					setIsDragging
+				}}
+			>
+				<GlobalStyle/>
+				{children}
+			</IsDraggingProvider>
 		</IsMobileProvider>
 	)
 }
