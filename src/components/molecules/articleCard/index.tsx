@@ -23,7 +23,7 @@ const responsiveStyles = (isMobile: boolean) => ({
 
 const aspectRatio = '16x9'
 
-const ArticleCard = ({article}: Props) => {
+const ArticleCard = ({article, isDragging}: Props) => {
 	const {headline, primary_tag, primary_image, published_date, permalink} = article
 	const isMobile = useContext(IsMobile)
 	const styles = responsiveStyles(isMobile)
@@ -39,6 +39,10 @@ const ArticleCard = ({article}: Props) => {
 				aria-label={ariaLabel}
 				rel={'noopener noreferrer'}
 				target={'_blank'}
+				onClick={e => {
+					console.log('clicked: ', isDragging)
+					if (isDragging) e.preventDefault()
+				}}
 			>
 				{imgSrc ?
 					<Image
@@ -73,8 +77,8 @@ const ArticleCard = ({article}: Props) => {
 
 // parent slider re-renders frequently on drag
 // just need a simple comp here since nested article items don't change
-const propsAreEqual = (prevArticleCard: Props, nextArticleCard: Props) => {
-	return !!prevArticleCard.article === !!nextArticleCard.article
-}
+// const propsAreEqual = (prevArticleCard: Props, nextArticleCard: Props) => {
+// 	return !!prevArticleCard.article === !!nextArticleCard.article
+// }
 
-export default memo(ArticleCard, propsAreEqual)
+export default memo(ArticleCard)

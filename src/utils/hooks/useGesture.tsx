@@ -22,6 +22,8 @@ const useGesture = (r: RefObject<HTMLElement | null>, opts: {onSwipeRight: () =>
 			start.current = e.touches[0].clientX
 		}
 		const onMouseStart = (e: MouseEvent) => {
+			if (e.target.tagName === 'IMG') console.log('YES')
+			if (e.target.tagName === 'IMG') e.preventDefault()
 			start.current = e.x
 		}
 		const onTouchMove = (e: TouchEvent) => {
@@ -37,19 +39,23 @@ const useGesture = (r: RefObject<HTMLElement | null>, opts: {onSwipeRight: () =>
 		}
 		const onTouchEnd = (e: TouchEvent) => {
 			if (!start.current) return
-			onEnd(start.current, e.changedTouches[0].clientX)
+			onEnd(start.current, e)
 		}
 		const onMouseEnd = (e: MouseEvent) => {
 			if (!start.current) return
-			onEnd(start.current, e.x)
+			e.stopImmediatePropagation()
+			e.preventDefault()
+			onEnd(start.current, e)
 		}
-		const onEnd = (prevPos: number, pos: number) => {
+		const onEnd = (prevPos: number, e: TouchEvent) => {
 			if (!start.current) return
+			const pos = e.x || e.changedTouches[0].clientX
 			const diff = pos - prevPos
-
 			if (diff > threshold) {
+				e.preventDefault()
 				if (opts.onSwipeRight) opts.onSwipeRight()
 			} else if (diff < -threshold) {
+				e.preventDefault()
 				if (opts.onSwipeLeft) opts.onSwipeLeft()
 			}
 

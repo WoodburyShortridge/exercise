@@ -17,7 +17,7 @@ interface Props {
 	}
 }
 
-const Carousel = ({children, itemsPerPage, title, link}: Props) => {
+const Carousel = ({children, itemsPerPage, title, link, isDragging, setIsDragging}: Props) => {
 	const id = title.toLowerCase().replaceAll(' ', '-')
 	const isMobile = useContext(IsMobile)
 	const [page, setPage] = useState(0)
@@ -56,6 +56,8 @@ const Carousel = ({children, itemsPerPage, title, link}: Props) => {
 					itemsPerPage={itemsPerPage}
 					page={page}
 					changePage={changePage}
+					isDragging={isDragging}
+					setIsDragging={setIsDragging}
 				>
 					{children}
 				</Slider>
